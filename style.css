@@ -1,15 +1,16 @@
-body {
+body, html {
   margin: 0;
+  padding: 0;
+  height: 100%;
   font-family: Arial, sans-serif;
 }
 
 .navbar {
   display: flex;
   align-items: center;
-  background-color: #D9111B; /* Rotes Hintergrund */
+  background-color: #D9111B;
   padding: 10px;
   color: white;
-  z-index: 10;
 }
 
 .logo img {
@@ -33,7 +34,7 @@ body {
 
 #search-container {
   position: absolute;
-  top: 70px;
+  top: 70px; /* Direkt unter der Navbar */
   left: 50%;
   transform: translateX(-50%);
   background: white;
@@ -51,10 +52,6 @@ body {
 }
 
 .map {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 0;
+  height: calc(100vh - 60px); /* Höhe der Navbar abziehen */
+  width: 100%;
 }
