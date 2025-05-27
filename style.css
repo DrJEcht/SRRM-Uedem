@@ -73,7 +73,7 @@ body, html {
 #opacity-control {
   position: absolute;
   bottom: 15px;
-  right: 15px;
+  left: 15px;
   background: rgba(255, 255, 255, 0.85);
   padding: 8px 12px;
   border-radius: 5px;
