@@ -155,3 +155,35 @@ body, html {
   width: 120px;
 }
 
+
+#legendButton {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #D9111B;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+#legendPopup {
+  position: absolute;
+  bottom: 60px; /* etwas oberhalb des Buttons */
+  left: 15px;
+  background-color: rgba(255, 255, 255, 0.95);
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  display: none;
+  z-index: 1000;
+}
+
+#legendPopup object {
+  width: 250px;
+  height: auto;
+}
+
