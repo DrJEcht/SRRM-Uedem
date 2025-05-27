@@ -80,10 +80,8 @@ searchBtn.addEventListener('click', () => {
         result.textContent = 'Keine Ergebnisse gefunden.';
         return;
       }
+
       const place = data[0];
-
-      result.innerHTML = `<b>${place.display_name}</b><br>Lat: ${place.lat}, Lon: ${place.lon}`;
-
       const lon = parseFloat(place.lon);
       const lat = parseFloat(place.lat);
       const coord = ol.proj.fromLonLat([lon, lat]);
@@ -105,14 +103,20 @@ searchBtn.addEventListener('click', () => {
         })
       }));
       vectorSource.addFeature(marker);
+
+      // ✅ Ergebnis anzeigen und nach kurzer Zeit ausblenden
+      result.innerHTML = `<b>${place.display_name}</b>`;
+      setTimeout(() => {
+        result.textContent = '';
+      }, 3000); // 3 Sekunden
     })
     .catch(err => {
       result.textContent = 'Fehler bei der Suche: ' + err.message;
     });
 });
 
-addressInput.addEventListener('keydown', e => {
-  if (e.key === 'Enter') {
-    searchBtn.click();
-  }
+const opacitySlider = document.getElementById('opacitySlider');
+opacitySlider.addEventListener('input', (event) => {
+  const value = parseFloat(event.target.value);
+  wmtsLayer.setOpacity(value);
 });
