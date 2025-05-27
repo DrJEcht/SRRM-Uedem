@@ -154,3 +154,23 @@ infoBtn.addEventListener("click", () => {
   popup.style.display = "flex";
 });
 
+
+<script>
+  const legendButton = document.getElementById('legendButton');
+  const legendPopup = document.getElementById('legendPopup');
+
+  legendButton.addEventListener('click', () => {
+    const isVisible = legendPopup.style.display === 'block';
+    legendPopup.style.display = isVisible ? 'none' : 'block';
+  });
+
+  // Optional: Schließt Legende, wenn man außerhalb klickt
+  window.addEventListener('click', (e) => {
+    if (!legendPopup.contains(e.target) && e.target !== legendButton) {
+      legendPopup.style.display = 'none';
+    }
+  });
+</script>
+
+  
+
