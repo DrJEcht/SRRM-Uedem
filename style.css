@@ -187,3 +187,21 @@ body, html {
   height: auto;
 }
 
+#logo-kua {
+  position: absolute;
+  bottom: 100px; /* Abstand vom unteren Rand */
+  right: 15px;   /* Abstand vom rechten Rand */
+  z-index: 2000;
+}
+
+#logo-kua img {
+  height: 20px;
+  opacity: 0.9;
+  transition: opacity 0.2s;
+}
+
+#logo-kua img:hover {
+  opacity: 1;
+}
+
+
