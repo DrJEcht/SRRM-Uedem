@@ -1,0 +1,49 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  background-color: #004080;
+  padding: 10px;
+  color: white;
+}
+
+.logo img {
+  height: 40px;
+  margin-right: 20px;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-links li a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+#search-container {
+  padding: 10px;
+  background: #f0f0f0;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+#address {
+  padding: 5px;
+  width: 300px;
+}
+
+.map {
+  height: calc(100vh - 120px);
+  width: 100%;
+}

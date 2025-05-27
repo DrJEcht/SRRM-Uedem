@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kommune WMS Karte</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="map.js" defer></script>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="logo">
+      <img src="kommune-logo.png" alt="Kommune Logo">
+    </div>
+    <ul class="nav-links">
+      <li><a href="https://kommune.de">Startseite</a></li>
+      <li><a href="https://kommune.de/dienstleistungen">Dienstleistungen</a></li>
+      <li><a href="https://kommune.de/kontakt">Kontakt</a></li>
+    </ul>
+  </nav>
+
+  <div id="search-container">
+    <input type="text" id="address" placeholder="Adresse eingeben">
+    <button id="search-button">Suchen</button>
+  </div>
+
+  <div id="map" class="map"></div>
+
+</body>
+</html>
