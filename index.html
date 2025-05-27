@@ -28,7 +28,15 @@
 </div>
 
 <!-- Info-Button -->
-<button id="infoButton" title="Information anzeigen">i</button>
+<div id="bottom-controls">
+  <button id="infoButton" title="Information anzeigen">i</button>
+
+  <!-- Deckkraft Slider -->
+  <div id="opacity-control">
+    <label for="opacitySlider">Deckkraft:</label>
+    <input type="range" id="opacitySlider" min="0" max="1" step="0.01" value="0.8" />
+  </div>
+</div>
 
   
   <nav class="navbar">
@@ -44,10 +52,6 @@
   </ul>
 </nav>
 
-<div id="opacity-control">
-  <label for="opacitySlider">Deckkraft:</label>
-  <input type="range" id="opacitySlider" min="0" max="1" step="0.01" value="0.8" />
-</div>
 
 <div id="search-container">
     <input type="text" id="addressInput" placeholder="Adresse eingeben">
