@@ -96,3 +96,58 @@ body, html {
   width: 100%;
 }
 
+/* Popup Overlay */
+#infoPopup {
+  position: fixed;
+  z-index: 100;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.3); /* halbtransparent */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Popup Box */
+.popup-content {
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 20px 30px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  width: 300px;
+  max-width: 90%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+/* Schließen-Button (X) */
+.popup-content .close {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #555;
+  cursor: pointer;
+}
+
+/* Info-Button */
+#infoButton {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #D9111B;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+
