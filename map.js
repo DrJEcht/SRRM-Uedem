@@ -1,85 +1,98 @@
-import 'https://cdn.jsdelivr.net/npm/ol@10.0.0/ol.css';
-import Map from 'https://cdn.jsdelivr.net/npm/ol@10.0.0/Map.js';
-import View from 'https://cdn.jsdelivr.net/npm/ol@10.0.0/View.js';
-import TileLayer from 'https://cdn.jsdelivr.net/npm/ol@10.0.0/layer/Tile.js';
-import OSM from 'https://cdn.jsdelivr.net/npm/ol@10.0.0/source/OSM.js';
-import TileWMS from 'https://cdn.jsdelivr.net/npm/ol@10.0.0/source/TileWMS.js';
-import {fromLonLat} from 'https://cdn.jsdelivr.net/npm/ol@10.0.0/proj.js';
-import {toLonLat} from 'https://cdn.jsdelivr.net/npm/ol@10.0.0/proj.js';
-import {Feature} from 'https://cdn.jsdelivr.net/npm/ol@10.0.0/Feature.js';
-import Point from 'https://cdn.jsdelivr.net/npm/ol@10.0.0/geom/Point.js';
-import VectorLayer from 'https://cdn.jsdelivr.net/npm/ol@10.0.0/layer/Vector.js';
-import VectorSource from 'https://cdn.jsdelivr.net/npm/ol@10.0.0/source/Vector.js';
-import Style from 'https://cdn.jsdelivr.net/npm/ol@10.0.0/style/Style.js';
-import Icon from 'https://cdn.jsdelivr.net/npm/ol@10.0.0/style/Icon.js';
+// EPSG:25832 definieren
+proj4.defs("EPSG:25832", "+proj=utm +zone=32 +ellps=GRS80 +units=m +no_defs");
+ol.proj.proj4.register(proj4);
 
-// Basis Layer
-const osmLayer = new TileLayer({
-  source: new OSM()
+// Attribution
+const attribution = new ol.control.Attribution({
+  collapsible: false,
 });
 
-// Beispiel-WMS Layer (DWD Radarbild als WMS)
-const wmsLayer = new TileLayer({
-  source: new TileWMS({
-    url: 'https://maps.dwd.de/geoserver/dwd/ows?',
-    params: {
-      'LAYERS': 'dwd:FX-Produkt',
-      'TILED': true,
-      'FORMAT': 'image/png',
-      'TRANSPARENT': true
-    },
-    ratio: 1,
-    serverType: 'geoserver'
+const key = 'EdafZNDsmwFgAOzJWLIw'; // <-- Dein MapTiler API Key
+
+const projection = ol.proj.get('EPSG:3857');
+
+// Zoomlevel 11 bis 16
+const matrixIds = ['11', '12', '13', '14', '15', '16'];
+const resolutions = matrixIds.map(z => 156543.03392804097 / Math.pow(2, z));
+
+// WMTS Layer von MapTiler
+const wmtsLayer = new ol.layer.Tile({
+  opacity: 0.8,
+  source: new ol.source.WMTS({
+    url: `https://api.maptiler.com/tiles/01970dc0-307a-7225-9efb-70ef1de872ad/{TileMatrix}/{TileCol}/{TileRow}.webp?key=${key}`,
+    layer: 'Ohne Versickerung',
+    matrixSet: 'GoogleMapsCompatible256-z11-16',
+    format: 'image/webp',
+    style: 'default',
+    wrapX: true,
+    requestEncoding: 'REST',
+    tileGrid: new ol.tilegrid.WMTS({
+      origin: ol.extent.getTopLeft(projection.getExtent()),
+      resolutions: resolutions,
+      matrixIds: matrixIds,
+      tileSize: 256
+    })
   })
+});
+
+const osmLayer = new ol.layer.Tile({
+  source: new ol.source.OSM()
+});
+
+// View
+const view = new ol.View({
+  center: ol.proj.fromLonLat([6.96583, 51.22848]),
+  zoom: 16,
+  extent: ol.proj.transformExtent(
+    [6.70, 51.00, 7.40, 51.50],
+    'EPSG:4326',
+    'EPSG:3857'
+  )
 });
 
 // Karte initialisieren
-const map = new Map({
+const map = new ol.Map({
   target: 'map',
-  layers: [osmLayer, wmsLayer],
-  view: new View({
-    center: fromLonLat([10.4515, 51.1657]), // Zentrum Deutschland
-    zoom: 6
-  })
+  layers: [osmLayer, wmtsLayer],
+  controls: ol.control.defaults.defaults({ attribution: false }).extend([attribution]),
+  view: view
 });
 
-// Vektorquelle für Suchmarker
-const vectorSource = new VectorSource();
-const markerLayer = new VectorLayer({
-  source: vectorSource
-});
-map.addLayer(markerLayer);
+// Marker Layer für Suche
+const vectorSource = new ol.source.Vector();
+const vectorLayer = new ol.layer.Vector({ source: vectorSource });
+map.addLayer(vectorLayer);
 
-// Suche
-document.getElementById('search-button').addEventListener('click', () => {
-  const address = document.getElementById('address').value;
+// Adresssuche über Nominatim
+function searchAddress() {
+  const address = document.getElementById("address").value;
   if (!address) return;
 
   fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`)
-    .then(response => response.json())
+    .then(res => res.json())
     .then(data => {
       if (data.length > 0) {
         const lon = parseFloat(data[0].lon);
         const lat = parseFloat(data[0].lat);
-        const coord = fromLonLat([lon, lat]);
+        const coords = ol.proj.fromLonLat([lon, lat]);
 
-        // Karte bewegen
-        map.getView().animate({center: coord, zoom: 16});
-
-        // Marker setzen
+        view.animate({ center: coords, zoom: 16 });
         vectorSource.clear();
-        const marker = new Feature({
-          geometry: new Point(coord)
+
+        const marker = new ol.Feature({
+          geometry: new ol.geom.Point(coords)
         });
-        marker.setStyle(new Style({
-          image: new Icon({
+
+        marker.setStyle(new ol.style.Style({
+          image: new ol.style.Icon({
             anchor: [0.5, 1],
             src: 'https://cdn.jsdelivr.net/npm/ol@10.0.0/examples/data/icon.png'
           })
         }));
+
         vectorSource.addFeature(marker);
       } else {
         alert("Adresse nicht gefunden.");
       }
     });
-});
+}
