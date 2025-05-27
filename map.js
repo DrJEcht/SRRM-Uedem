@@ -41,10 +41,10 @@ const osmLayer = new ol.layer.Tile({
 
 // View
 const view = new ol.View({
-  center: ol.proj.fromLonLat([6.96583, 51.22848]),
+  center: ol.proj.fromLonLat([6.274640, 51.666852]),
   zoom: 16,
   extent: ol.proj.transformExtent(
-    [6.70, 51.00, 7.40, 51.50],
+    [],
     'EPSG:4326',
     'EPSG:3857'
   )
