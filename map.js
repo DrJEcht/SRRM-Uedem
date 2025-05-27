@@ -43,6 +43,13 @@ const osmLayer = new ol.layer.Tile({
 const view = new ol.View({
   center: ol.proj.fromLonLat([6.274640, 51.666852]),
   zoom: 16,
+  extent: ol.proj.transformExtent(
+    [6.20, 51.62, 6.40, 51.72],  // [minLon, minLat, maxLon, maxLat]
+    'EPSG:4326',
+    'EPSG:3857'
+  )
+
+ 
 });
 
 // Karte initialisieren
