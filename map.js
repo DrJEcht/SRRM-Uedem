@@ -120,3 +120,30 @@ opacitySlider.addEventListener('input', (event) => {
   const value = parseFloat(event.target.value);
   wmtsLayer.setOpacity(value);
 });
+
+const popup = document.getElementById("infoPopup");
+const closeBtn = popup.querySelector(".close");
+const infoBtn = document.getElementById("infoButton");
+
+// Beim Laden anzeigen
+window.addEventListener("load", () => {
+  popup.style.display = "flex";
+});
+
+// Schließen mit X
+closeBtn.addEventListener("click", () => {
+  popup.style.display = "none";
+});
+
+// Schließen durch Klick außerhalb
+popup.addEventListener("click", (e) => {
+  if (e.target === popup) {
+    popup.style.display = "none";
+  }
+});
+
+// Öffnen über Info-Button
+infoBtn.addEventListener("click", () => {
+  popup.style.display = "flex";
+});
+
