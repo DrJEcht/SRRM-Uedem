@@ -108,7 +108,7 @@ searchBtn.addEventListener('click', () => {
       result.innerHTML = `<b>${place.display_name}</b>`;
       setTimeout(() => {
         result.textContent = '';
-      }, 3000); // 3 Sekunden
+      }, 5000); // 3 Sekunden
     })
     .catch(err => {
       result.textContent = 'Fehler bei der Suche: ' + err.message;
