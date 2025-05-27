@@ -189,9 +189,7 @@ body, html {
 
 #logo-kua {
   position: absolute;
-  bottom: 100px; /* Abstand vom unteren Rand */
-  right: 15px;   /* Abstand vom rechten Rand */
-  z-index: 2000;
+    z-index: 2000;
 }
 
 #logo-kua img {
