@@ -33,13 +33,18 @@
 <!-- Info-Button -->
 <div id="bottom-controls">
   <button id="infoButton" title="Information anzeigen">i</button>
+  <button id="legendButton" title="Legende anzeigen">l</button>
 
-  <!-- Deckkraft Slider -->
   <div id="opacity-control">
-    <label for="opacitySlider">Deckkraft:</label>
+    <label for="opacitySlider">WMS Transparenz:</label>
     <input type="range" id="opacitySlider" min="0" max="1" step="0.01" value="0.8" />
   </div>
+
+  <div id="legendPopup">
+    <object type="image/svg+xml" data="legende.svg"></object>
+  </div>
 </div>
+
 
   
   <nav class="navbar">
