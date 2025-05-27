@@ -58,36 +58,61 @@ const vectorSource = new ol.source.Vector();
 const vectorLayer = new ol.layer.Vector({ source: vectorSource });
 map.addLayer(vectorLayer);
 
-// Adresssuche über Nominatim
-function searchAddress() {
-  const address = document.getElementById("address").value;
-  if (!address) return;
+// 🔍 Adresse suchen
+const searchBtn = document.getElementById('searchBtn');
+const addressInput = document.getElementById('addressInput');
+const result = document.getElementById('result');
 
-  fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`)
-    .then(res => res.json())
+searchBtn.addEventListener('click', () => {
+  const address = addressInput.value.trim();
+  if (!address) {
+    result.textContent = 'Bitte gib eine Adresse ein.';
+    return;
+  }
+  result.textContent = 'Suche...';
+
+  const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`;
+
+  fetch(url)
+    .then(response => response.json())
     .then(data => {
-      if (data.length > 0) {
-        const lon = parseFloat(data[0].lon);
-        const lat = parseFloat(data[0].lat);
-        const coords = ol.proj.fromLonLat([lon, lat]);
-
-        view.animate({ center: coords, zoom: 16 });
-        vectorSource.clear();
-
-        const marker = new ol.Feature({
-          geometry: new ol.geom.Point(coords)
-        });
-
-        marker.setStyle(new ol.style.Style({
-          image: new ol.style.Icon({
-            anchor: [0.5, 1],
-            src: 'https://cdn.jsdelivr.net/npm/ol@10.0.0/examples/data/icon.png'
-          })
-        }));
-
-        vectorSource.addFeature(marker);
-      } else {
-        alert("Adresse nicht gefunden.");
+      if (data.length === 0) {
+        result.textContent = 'Keine Ergebnisse gefunden.';
+        return;
       }
+      const place = data[0];
+
+      result.innerHTML = `<b>${place.display_name}</b><br>Lat: ${place.lat}, Lon: ${place.lon}`;
+
+      const lon = parseFloat(place.lon);
+      const lat = parseFloat(place.lat);
+      const coord = ol.proj.fromLonLat([lon, lat]);
+
+      view.animate({
+        center: coord,
+        zoom: 18,
+        duration: 1000
+      });
+
+      vectorSource.clear();
+      const marker = new ol.Feature({
+        geometry: new ol.geom.Point(coord)
+      });
+      marker.setStyle(new ol.style.Style({
+        image: new ol.style.Icon({
+          anchor: [0.5, 1],
+          src: 'https://cdn.jsdelivr.net/npm/ol@10.0.0/examples/data/icon.png'
+        })
+      }));
+      vectorSource.addFeature(marker);
+    })
+    .catch(err => {
+      result.textContent = 'Fehler bei der Suche: ' + err.message;
     });
-}
+});
+
+addressInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    searchBtn.click();
+  }
+});
